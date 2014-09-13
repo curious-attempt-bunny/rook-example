@@ -1,17 +1,13 @@
-#_(defdeps [[io.aviso/rook "0.1.14"] [ring "1.3.1"]])
-
-(ns org.example.allinone
+(ns org.example.server
   (:require
     [ring.adapter.jetty :as jetty]
     [io.aviso.rook :as rook]))
 
-(defn show [] "Hello there!")
-
 (defn start-server
 	[port]
   (let [handler (-> (rook/namespace-handler
-                     [["counter"] 'org.example.allinone])
+                     [["counters"] 'org.example.resources.counters])
 	                   rook/wrap-with-standard-middleware)]
      (jetty/run-jetty handler {:port port :join? false})))
 
-(start-server 8080)
+(defn main [] (start-server 8080))
